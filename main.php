@@ -40,12 +40,12 @@ class wpRentalImport {
         include 'options-page.php';
     }
 
-      function admin_scripts() {    
-            wp_enqueue_script('rt_admin_script', plugins_url('/', __FILE__) . 'js/script_admin.js');
-            wp_register_style('rt_admin_css', plugins_url('/', __FILE__) . 'css/style_admin.css', false, '1.0.0');
-            wp_enqueue_style('rt_admin_css');
-        
+    function admin_scripts() {
+        wp_enqueue_script('rt_admin_script', plugins_url('/', __FILE__) . 'js/script_admin.js');
+        wp_register_style('rt_admin_css', plugins_url('/', __FILE__) . 'css/style_admin.css', false, '1.0.0');
+        wp_enqueue_style('rt_admin_css');
     }
+
     function front_scripts() {
         global $post;
         if (is_page() || is_single()) {
@@ -62,17 +62,24 @@ class wpRentalImport {
             wp_enqueue_style('wpvr_front_css', plugins_url('/', __FILE__) . 'css/style_front.css');
         endif;
     }
-    
-    function ajax_remove_city(){
+
+    function ajax_remove_city() {
         $id = $_POST['id'];
-       
+
         global $wpdb;
         $res = $wpdb->query("delete from $this->table where id=$id");
-        if($res)
+        if ($res)
             echo 1;
-        
-     
+
+
         exit;
+    }
+
+    function not_in_table($city) {
+        global $wpdb;
+        $var = $wpdb->get_var("select city_url from $this->table where city_name='$city'");
+        if ($var == null)
+            return true;
     }
 
     function create_table() {
@@ -90,6 +97,28 @@ class wpRentalImport {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         dbDelta($sql);
+
+
+        // Adding primary cities to database
+        $a = fopen(plugins_url('/', __FILE__) . 'cities.txt', 'r');
+        $base = 'craigslist.org/';
+
+        while ($line = trim(fgets($a))):
+
+            if ($this->not_in_table($line)) {
+                $replace = array("\r", "\n", "\r\n", " ");
+                $city = str_replace($replace, "", $line);
+
+                $city = strtolower(preg_replace('~\s~', '', $city));
+
+                if (($pos = stripos($city, '-')) !== false) {
+                    $city = substr($city, 0, $pos + 1);
+                }
+                $city_url = 'http://' . $city . '.' . $base;
+                $wpdb->query("insert into $this->table (city_name, city_url) values('$line', '$city_url')");
+            }
+        endwhile;
     }
 
+// end of create_table
 }

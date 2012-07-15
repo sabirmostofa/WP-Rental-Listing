@@ -19,15 +19,19 @@ endif;
 if (isset($_POST['city-submit'])):
     $_POST = array_map(create_function('$a', 'return trim($a);'), $_POST);
     extract($_POST);
-    if(strlen($city_name) !== 0 && strlen($city_url) !== 0)        
-    $res= $wpdb->query("insert into $this->table (city_name, city_url) values('$city_name', '$city_url')");
-var_dump($res);
+    if (strlen($city_name) !== 0 && strlen($city_url) !== 0)        
+        if( $this -> not_in_table($city_name) )
+        $res = $wpdb->query("insert into $this->table (city_name, city_url) values('$city_name', '$city_url')");
+   
 
 endif;
 
 if (get_option('rental-settings-var'))
     extract(get_option('rental-settings-var'));
 $max_post = (isset($max_post)) ? $max_post : 10;
+
+
+
 ?>
 
 <div class="wrap">
@@ -58,14 +62,14 @@ $max_post = (isset($max_post)) ? $max_post : 10;
     <br/>
     <br/>
 
-<?php
-$all_cities = $wpdb->get_results(
-        "SELECT id, city_name, city_url 
+    <?php
+    $all_cities = $wpdb->get_results(
+            "SELECT id, city_name, city_url 
 	FROM $this->table	
 	"
-);
-//var_dump($all_cities);\
-?>
+    );
+//var_dump($all_cities);
+    ?>
     <table class="widefat" >
         <thead>
             <tr>
@@ -77,20 +81,22 @@ $all_cities = $wpdb->get_results(
         </thead>
         <tbody>
 
-<?php
-$drop_image = $this->image_dir . 'b_drop.png';
-foreach ($all_cities as $city):
-    echo "<tr><td><a href='#'> <img src='$drop_image' class='$city->id'/><a></td> <td> $city->city_name</td><td>$city->city_url</td></tr>";
-    ?>
+            <?php
+            $drop_image = $this->image_dir . 'b_drop.png';
+            foreach ($all_cities as $city):
+                echo "<tr><td><a href='#'> <img src='$drop_image' class='$city->id'/><a></td> <td> $city->city_name</td><td><a href='$city->city_url'>$city->city_url</a></td></tr>";
+                ?>
 
 
 
-    <?php
-endforeach;
-?>
+                <?php
+            endforeach;
+                  ?>
         </tbody>
 
-
+</table>
 
 
 </div>
+
+<div style="clear:both;width:200px;heigth:20px"></div>
