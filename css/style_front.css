@@ -1,0 +1,65 @@
+.rate-grade-image{
+    float: left;
+    margin-left: 4px;
+    width:35px;
+    height:34px;
+    padding: 0 !important;   
+}
+
+.rate-grade-image img {
+border: 0px !important;
+}
+
+.dotted-margin{
+    border-top: 1px dotted green;
+    border-bottom: 1px dotted green;
+    width: 100%;
+overflow: auto;
+padding: 10px;
+margin-bottom:  10px;
+    
+    
+}
+.grade-this-text{
+    float:left;
+     margin-right:30px;
+     font-weight: bold;
+    
+    
+}
+.grade-text-value{
+    margin-left:30px;
+    float: left;
+}
+.grade-details{
+    text-align: center;
+    
+    
+}
+pre{
+background: none repeat scroll 0 0 #F4F4F4;
+    font: 13px/1.5 "Courier 10 Pitch",Courier,monospace;
+    margin-bottom: 1.625em;
+    overflow: auto;
+    padding: 0.75em 1.625em;
+}
+
+.copy-image-src{
+    margin: 10px auto;
+    width: 400px;
+}
+
+.cat-img-grade{
+width: 34px;
+height:33px;
+}
+
+.wsos-post-scr{
+width: 320px ;
+height: 240px ;
+margin: 10 px auto;
+}
+
+.wsos-reportcard-single{
+    margin:10px auto;
+}
