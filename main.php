@@ -25,6 +25,7 @@ class wpRentalImport {
         $this->table = $wpdb->prefix . 'rental_city_list';
         $this->table_data = $wpdb->prefix . 'rental_data';
         $this->image_dir = plugins_url('/', __FILE__) . 'images/';
+        add_action('init', array($this,'add_post_type'));
         add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
         add_action('wp_enqueue_scripts', array($this, 'front_scripts'));
         add_action('wp_print_styles', array($this, 'front_css'));
@@ -41,6 +42,24 @@ class wpRentalImport {
         include 'options-page.php';
     }
 
+    //adding post type
+    function add_post_type(){
+			register_post_type( 'rentallisting',
+				array(
+					'labels' => array(
+						'name' => __( 'Rental Listing' ),
+						'singular_name' => __( 'Rental' )
+					),
+				'public' => true,
+				'has_archive' => true,
+                                                                       'capability_type' => 'post',
+                                                                       'taxonomies'  => array('category','post_tag')
+				)
+			);
+
+	}
+        
+        
     function admin_scripts() {
         wp_enqueue_script('rt_admin_script', plugins_url('/', __FILE__) . 'js/script_admin.js');
         wp_register_style('rt_admin_css', plugins_url('/', __FILE__) . 'css/style_admin.css', false, '1.0.0');
@@ -94,11 +113,11 @@ class wpRentalImport {
 		)";
 
         $sql1 = "CREATE TABLE IF NOT EXISTS $this->table_data  (
-		`city_id` bigint(20) unsigned NOT NULL,		
 		`post_id` bigint(20) unsigned NOT NULL,		
+		`city_id` bigint(20) unsigned NOT NULL,		
 		`cg_id` bigint(20) unsigned NOT NULL,			
-		 PRIMARY KEY (`city_id`),				 	
-		 key `post_id`(`post_id`),		 	
+		 PRIMARY KEY (`post_id`),				 	
+		 key `post_id`(`city_id`),		 	
 		 key `cg_id`(`cg_id`)		 	
 		)";
 
