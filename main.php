@@ -25,13 +25,16 @@ class wpRentalImport {
         $this->table = $wpdb->prefix . 'rental_city_list';
         $this->table_data = $wpdb->prefix . 'rental_data';
         $this->image_dir = plugins_url('/', __FILE__) . 'images/';
-        add_action('init', array($this,'add_post_type'));
+        add_action('init', array($this, 'add_post_type'));
         add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
         add_action('wp_enqueue_scripts', array($this, 'front_scripts'));
         add_action('wp_print_styles', array($this, 'front_css'));
         add_action('admin_menu', array($this, 'CreateMenu'), 50);
+        add_action('wp_rental_cron', array($this, 'start_cron'));
         add_action('wp_ajax_city_remove', array($this, 'ajax_remove_city'));
         register_activation_hook(__FILE__, array($this, 'create_table'));
+        register_activation_hook(__FILE__, array($this, 'init_cron'));
+        register_deactivation_hook(__FILE__, array($this, 'deactivation_tasks'));
     }
 
     function CreateMenu() {
@@ -43,23 +46,29 @@ class wpRentalImport {
     }
 
     //adding post type
-    function add_post_type(){
-			register_post_type( 'rentallisting',
-				array(
-					'labels' => array(
-						'name' => __( 'Rental Listing' ),
-						'singular_name' => __( 'Rental' )
-					),
-				'public' => true,
-				'has_archive' => true,
-                                                                       'capability_type' => 'post',
-                                                                       'taxonomies'  => array('category','post_tag')
-				)
-			);
+    function add_post_type() {
+        register_post_type('rentallisting', array(
+            'labels' => array(
+                'name' => __('Rental Listing'),
+                'singular_name' => __('Rental')
+            ),
+            'public' => true,
+            'has_archive' => true,
+            'capability_type' => 'post',
+            'taxonomies' => array('category', 'post_tag')
+                )
+        );
+    }
 
-	}
-        
-        
+    function start_cron() {
+        include 'cr-cron.php';
+    }
+
+    function init_cron() {
+        if (!wp_get_schedule('wp_rental_cron'))
+            wp_schedule_event(time(), 'daily', 'wp_rental_cron');
+    }
+
     function admin_scripts() {
         wp_enqueue_script('rt_admin_script', plugins_url('/', __FILE__) . 'js/script_admin.js');
         wp_register_style('rt_admin_css', plugins_url('/', __FILE__) . 'css/style_admin.css', false, '1.0.0');
@@ -298,6 +307,11 @@ class wpRentalImport {
         $title = trim($title, '-');
         $title = trim($title, '.');
         return trim($title);
+    }
+
+    function deactivation_tasks() {
+
+        wp_clear_scheduled_hook('wp_rental_cron');
     }
 
 }

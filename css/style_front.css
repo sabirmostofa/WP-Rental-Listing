@@ -1,65 +1,97 @@
-.rate-grade-image{
-    float: left;
-    margin-left: 4px;
-    width:35px;
-    height:34px;
-    padding: 0 !important;   
+
+
+.iw div {
+	float: left;
+	margin: 2px;
+}
+.iw:before, .iw:after {
+	content: "";
+	display: table;
+}
+.iw:after {
+	clear: both;
 }
 
-.rate-grade-image img {
-border: 0px !important;
+#iwt {
+	margin: 0;
 }
 
-.dotted-margin{
-    border-top: 1px dotted green;
-    border-bottom: 1px dotted green;
-    width: 100%;
-overflow: auto;
-padding: 10px;
-margin-bottom:  10px;
-    
-    
+#ci {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	width: 602px; 
+	height: 452px;
+	border: 1px #ccc solid;
 }
-.grade-this-text{
-    float:left;
-     margin-right:30px;
-     font-weight: bold;
-    
-    
+#ci * {
+	vertical-align: middle;
 }
-.grade-text-value{
-    margin-left:30px;
-    float: left;
+#ci span {
+    display: inline-block;
+    height: 100%;
 }
-.grade-details{
-    text-align: center;
-    
-    
+/* IE/Mac *//*/
+#ci {
+    display: block;
 }
-pre{
-background: none repeat scroll 0 0 #F4F4F4;
-    font: 13px/1.5 "Courier 10 Pitch",Courier,monospace;
-    margin-bottom: 1.625em;
-    overflow: auto;
-    padding: 0.75em 1.625em;
+#ci span {
+    display: inline-block;
+    height: 100%;
+    width: 1px;
+}
+/**/
+
+.tn {
+	clear: both;
 }
 
-.copy-image-src{
-    margin: 10px auto;
-    width: 400px;
+/************
+ SIMPLE PAGES
+ ************/
+
+#fakePage { position: relative; }
+
+#sc { position: absolute; }
+
+#sc #banner {
+	width: 9em;
+	position: absolute;
+	background: #ddd;
+	padding: 4px;
+	height: 100%;
+	top: 0;
+	left: 0;
 }
 
-.cat-img-grade{
-width: 34px;
-height:33px;
+#sc #banner #logo {
+	text-align: center;
+	margin-bottom: 8em;
+}
+#sc #banner #logo span {
+	color: #009;
+	font-size: 80%;
+	font-family: verdana,sans-serif;
+	font-weight: bold;
+}
+#sc #banner #logo a { font-size: 200%; }
+
+#sc #banner #update {
+	font-size: xx-small;
+	color: #444;
+	padding: 12px;
+	padding-bottom: 600px;
 }
 
-.wsos-post-scr{
-width: 320px ;
-height: 240px ;
-margin: 10 px auto;
+#sc #banner #prinfo {
+	font-size: x-small;
+	background: #ffc;
+	padding: 4px;
+	margin: 8px;
+	margin-bottom: 3em;
 }
 
-.wsos-reportcard-single{
-    margin:10px auto;
-}
+#sc #content { margin-left: 11em;  padding: 10px; }
+
+#sc #content p { clear: none; }
+
