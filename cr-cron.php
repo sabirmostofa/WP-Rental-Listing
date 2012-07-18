@@ -9,7 +9,7 @@ if(!function_exists('add_action'))
 require_once '../../../wp-load.php';
 
 
-if(!function_exists('wp_set_post_categories'))    
+if(!function_exists('wp_create_category'))    
 require_once '../../../wp-admin/includes/taxonomy.php';
 
 
@@ -32,7 +32,7 @@ $max_post = isset($max_post) ? $max_post : 10;
 //starting the loop
 foreach ($all_cities as $city):
     $insert_count = 0;
-    $url = $city->city_url . 'apa/';
+    $url = stripos($city->city_url, 'newyork')? $city->city_url . 'aap/' : $city->city_url . 'apa/';
     $res = $wpRentalImport->get_content_direct($url);
     if ($res[1] == 200) {
 
